@@ -2,7 +2,7 @@
 ### 
 - ## **论文解读**
 
-  原文：[PHYSICS-INFORMED NEURAL NETWORKS WITH HARD CONSTRAINTS FOR INVERSE DESIGN](chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/pdf/web/viewer.html?file=https%3A%2F%2Farxiv.org%2Fpdf%2F2102.04626.pdf)
+  原文：[PHYSICS-INFORMED NEURAL NETWORKS WITH HARD CONSTRAINTS FOR INVERSE DESIGN](https://arxiv.org/pdf/2102.04626.pdf)
 
   参考：[hpinn-DeepXDE](https://github.com/lululxvi/hpinn)
 
@@ -11,9 +11,9 @@
   - 在PINNs中实现时，利用神经网络同时预测物理场以及密度场，因此需要根据具体设计问题引入待优化的目标函数使方程封闭；该问题也是不适定的偏微分方程中的一类，可以凸显了PINN方法解决不适定问题中的灵活性优势。相对于传统的PINNs，作者处理的技巧主要包括了两点（hPINNs——physics-informed neural networks with hard constraints）：
 
     - 在网络结构设计，hPINNs采用了多个全连接层，每个全连接层预测一个物理场输出。
-    - PDE的边界条件不作为软约束引入优化损失中，而是通过设计专用的**<font color=Dodgerblue>硬约束函数</font>**直接保证在边界条件的成立。
+    - PDE的边界条件不作为软约束引入优化损失中，而是通过设计专用的**硬约束函数**直接保证在边界条件的成立。
 
-    - 引入PDE损失逐渐增大的惩罚项以及**<font color=Dodgerblue>Lagrange增强方法</font>**优化损失函数，相对于传统的优化方法可以达到更好的效果。
+    - 引入PDE损失逐渐增大的惩罚项以及**Lagrange增强方法**优化损失函数，相对于传统的优化方法可以达到更好的效果。
 
   - 作者选择了光学全息以及Stokes流体中的反设计问题验证了方法的有效性。要求复现的算例是光学全息中的反设计问题。
 
@@ -51,7 +51,7 @@
 | 论文Fig.6                                                    | 现Fig.6                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![image-20220526132137179](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132137179.png) | ![valid_Loss_Fig6_A](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_Loss_Fig6_A.jpg) |
-| ![image-20220526132205167](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132205167.png) | ![valid_Objetive_Fig6_B](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_Objetive_Fig6_B.jpg) |
+| ![image-20220526132205167](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132205167.png) | ![valid_Objetive_Fig6_B](res\hpinn_horo_mu_2_lag\figure\valid_Objetive_Fig6_B.jpg) |
 | ![image-20220526132221667](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132221667.png) | ![image-20220526204704883](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526204704883.png) |
 | ![image-20220526132236712](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132236712.png) | ![valid_lambda_Fig6_D](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_D.jpg) |
 | ![image-20220526132249136](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132249136.png) | ![valid_lambda_Fig6_E](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_E.jpg) |
@@ -60,12 +60,9 @@
 
 
 - ## 存在问题
-
-  - [x] PDE残差减小到$10^{-4}$以下 (the PDE loss is below $10^{-4}$ Fig. 6A)，已经复现成功。
-
-  - [ ] $E^2$的$L_2$相对损失在最终的ε降到1.2%以下（the L2 relative error of E2 between hPINN and FDFD for the final ε is 1.2%），原文中给出的FDFD 频域有限差分方法无法调试成功，因此无法完成另一个指标的对照。
-  - [ ] 科学计算中需要计算高阶微分，不仅是tanh、sigmoid等简单函数，paddle 目前无法支持sin cos exp 等算子的高阶微分计算；导致本算例中复现相对麻烦。
-  - [ ] PINN中，在Adam优化结束后切换L-BGFS可以大幅降低，提升PDE求解精度，目前paddle的L-BFGS无法使用，本工作中均采用Adam，虽然可以实现要求，但根据经验，对其他问题未必奏效。
+  - $E^2$的$L_2$相对损失在最终的ε降到1.2%以下（the L2 relative error of E2 between hPINN and FDFD for the final ε is 1.2%），原文中给出的FDFD 频域有限差分方法无法调试成功，因此无法完成另一个指标的对照。
+  - 科学计算中需要计算高阶微分，不仅是tanh、sigmoid等简单函数，paddle 目前无法支持sin cos exp 等算子的高阶微分计算；导致本算例中复现相对麻烦。
+  - PINN中，在Adam优化结束后切换L-BGFS可以大幅降低，提升PDE求解精度，目前paddle的L-BFGS无法使用，本工作中均采用Adam，虽然可以实现要求，但根据经验，对其他问题未必奏效。
 
 - ## paddle 目前无法支持算子的高阶微分计算解决方案 
 
@@ -75,12 +72,13 @@
 
 $$
 \begin{aligned}
-\pmb{h}(\pmb{x}) &= featuretransform(\pmb{x}) \\
-w(\pmb{h}) &= NeuralNetwork(\pmb{h}) \\
-t(\pmb{x}) &= HardConstraint(\pmb{x}) \\
+\pmb{h}(\pmb{x}) &= featuretransform(\pmb{x})\\
+w(\pmb{h}) &= NeuralNetwork(\pmb{h})\\
+t(\pmb{x}) &= HardConstraint(\pmb{x})\\
 f(t, \pmb{w}) &= Outputtransform(t, w) =t(\pmb{x})\cdot w(\pmb{x})\\
 \end{aligned}
 $$
+
    其中，$w(\pmb{h})$可中含有tanh()激活函数，paddle已实现其高阶微分计算方式，利用复合函数、乘积的微分运算以及链式法则，得到：
 
 - 一阶微分$\nabla_x f(\pmb{x})$计算		如下：
