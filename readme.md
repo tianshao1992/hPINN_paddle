@@ -53,7 +53,7 @@
 | ![image-20220526132137179](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132137179.png) | ![valid_Loss_Fig6_A](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_Loss_Fig6_A.jpg) |
 | ![image-20220526132205167](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132205167.png) | ![valid_Objetive_Fig6_B](res\hpinn_horo_mu_2_lag\figure\valid_Objetive_Fig6_B.jpg) |
 | ![image-20220526132221667](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132221667.png) | ![image-20220526204704883](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526204704883.png) |
-| ![image-20220526132236712](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132236712.png) | ![valid_lambda_Fig6_D](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_D.jpg) |
+| ![image-20220526132236712](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_D.jpg) |
 | ![image-20220526132249136](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132249136.png) | ![valid_lambda_Fig6_E](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_E.jpg) |
 | ![image-20220526132257938](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132257938.png) | ![valid_lambda_Fig6_F](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_F.jpg) |
 
