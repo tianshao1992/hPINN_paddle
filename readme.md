@@ -52,7 +52,7 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | ![image-20220526132137179](/fig/fig6A.jpg) | ![valid_Loss_Fig6_A](/res/hpinn_horo_mu_2_lag/figure/valid_Loss_Fig6_A.jpg) |
 | ![image-20220526132205167](/fig/fig6B.jpg) | ![valid_Objetive_Fig6_B](/res/hpinn_horo_mu_2_lag/figure/valid_Objetive_Fig6_B.jpg) |
-| ![image-20220526132221667](/fig/fig6C.jpg) | ![valid_Fig 6C](/res/hpinn_horo_mu_2_lag/figure/valid_Fig 6C.png) |
+| ![image-20220526132221667](/fig/fig6C.jpg) | ![valid_Fig 6C](/res/hpinn_horo_mu_2_lag/figure/valid_Fig_6C.png) |
 | ![image-20220526132236712](/fig/fig6D.jpg) | ![valid_Fig 6C](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_D.jpg) |
 | ![image-20220526132249136](/fig/fig6E.jpg) | ![valid_lambda_Fig6_E](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_E.jpg) |
 | ![image-20220526132257938](/fig/fig6F.jpg) | ![valid_lambda_Fig6_F](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_F.jpg) |
