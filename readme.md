@@ -21,7 +21,7 @@
 
   - train_hpinn_horo 中为实现的lagrange增强方法求解带有硬约束的PDE及其反设计问题训练过程 （**训练模型运行**）
   - valid_hpinn_horo中为结果验证以及原文中Fig. 7中图片绘制 （**验证结果及出图**）
-  - 模型文件以及结果文件见根目录的**res文件夹**
+  - fig文件夹中为原始论文结果相关图片，复现模型文件以及结果文件见根目录的**res文件夹**
     - \train  训练集数据（input_train.txt） & 训练过程的可视化
     - \model 所有训练过程中的神经网络模型保存
     - \data 所有训练过程中的数据保存
@@ -48,14 +48,14 @@
 | 论文 |   $10^{-4}$    | $0.055$  |
 | 复现 | $3.97×10^{-5}$ | $0.055$  |
 
-| 论文Fig.6                                                    | 现Fig.6                                                      |
+| 论文Fig.6                                                    | 复现Fig.6                                                      |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| ![image-20220526132137179](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132137179.png) | ![valid_Loss_Fig6_A](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_Loss_Fig6_A.jpg) |
-| ![image-20220526132205167](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132205167.png) | ![valid_Objetive_Fig6_B](res\hpinn_horo_mu_2_lag\figure\valid_Objetive_Fig6_B.jpg) |
-| ![image-20220526132221667](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132221667.png) | ![image-20220526204704883](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526204704883.png) |
-| ![image-20220526132236712](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_D.jpg) |
-| ![image-20220526132249136](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132249136.png) | ![valid_lambda_Fig6_E](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_E.jpg) |
-| ![image-20220526132257938](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526132257938.png) | ![valid_lambda_Fig6_F](D:\Code\hPINN_paddle\res\hpinn_horo_mu_2_lag\figure\valid_lambda_Fig6_F.jpg) |
+| ![image-20220526132137179](/fig/fig6A.jpg) | ![valid_Loss_Fig6_A](/res/hpinn_horo_mu_2_lag/figure/valid_Loss_Fig6_A.jpg) |
+| ![image-20220526132205167](/fig/fig6B.jpg) | ![valid_Objetive_Fig6_B](/res/hpinn_horo_mu_2_lag/figure/valid_Objetive_Fig6_B.jpg) |
+| ![image-20220526132221667](/fig/fig6C.jpg) | ![valid_Fig 6C](/res/hpinn_horo_mu_2_lag/figure/valid_Fig 6C.png) |
+| ![image-20220526132236712](/fig/fig6D.jpg) | ![valid_Fig 6C](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_D.jpg) |
+| ![image-20220526132249136](/fig/fig6E.jpg) | ![valid_lambda_Fig6_E](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_E.jpg) |
+| ![image-20220526132257938](/fig/fig6F.jpg) | ![valid_lambda_Fig6_F](/res/hpinn_horo_mu_2_lag/figure/valid_lambda_Fig6_F.jpg) |
 
 
 
@@ -66,7 +66,7 @@
 
 - ## paddle 目前无法支持算子的高阶微分计算解决方案 
 
-![image-20220526200528982](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220526200528982.png)
+![image-20220526200528982](/fig/forward.png)
 
 - 考虑featuretransform里具有sin() cos() 以及 HardConstriant里有exp() 等Paddle暂时无法支持高阶微分的算子，因此计算$\nabla_x f(\pmb{x})$，$\nabla_x^T \nabla_x f(\pmb{x})$，（其中$f$指代电场实部或虚部的标量场，$\pmb{x}$指代空间坐标的向量，其余为中间涉及的映射），需要将无法自动微分的映射剥离开，利用手动微分计算这些部分的高阶导数，最后再用于PDE中的残差损失，上述计算的前向过程如下式所示：
 
