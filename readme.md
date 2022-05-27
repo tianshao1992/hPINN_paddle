@@ -18,6 +18,7 @@
   - 作者选择了光学全息以及Stokes流体中的反设计问题验证了方法的有效性。要求复现的算例是光学全息中的反设计问题。
 
 - ## 代码说明
+- [hpinn-paddle AI studio](https://aistudio.baidu.com/aistudio/projectdetail/4117361?contributionType=1&shared=1)
 
   - train_hpinn_horo 中为实现的lagrange增强方法求解带有硬约束的PDE及其反设计问题训练过程 （**训练模型运行**）
   - valid_hpinn_horo中为结果验证以及原文中Fig. 7中图片绘制 （**验证结果及出图**）
