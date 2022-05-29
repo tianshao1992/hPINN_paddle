@@ -37,13 +37,13 @@
 
 - ## 环境依赖
 
-  > numpy == 1.22.3
-  > scipy == 1.8.0
-  > scikit-optimize == 0.9.0
-  > paddlepaddle-gpu == 2.3.0
-  > paddle==1.0.2
-  > matplotlib==3.5.1
-  > seaborn==0.11.2
+  > numpy == 1.22.3 \
+  > scipy == 1.8.0  \
+  > scikit-optimize == 0.9.0 \
+  > paddlepaddle-gpu == 2.3.0 \
+  > paddle==1.0.2 \
+  > matplotlib==3.5.1 \
+  > seaborn==0.11.2 \
 
 - ## 复现结果
 
