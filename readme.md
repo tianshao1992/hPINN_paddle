@@ -43,7 +43,7 @@
   > paddlepaddle-gpu == 2.3.0 \
   > paddle==1.0.2 \
   > matplotlib==3.5.1 \
-  > seaborn==0.11.2 \
+  > seaborn==0.11.2 
 
 - ## 复现结果
 
