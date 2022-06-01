@@ -64,7 +64,6 @@
 
 
 - ## 存在问题
-  - $E^2$的$L_2$相对损失在最终的ε降到1.2%以下（the L2 relative error of E2 between hPINN and FDFD for the final ε is 1.2%），原文中给出的FDFD 频域有限差分方法无法调试成功，因此无法完成另一个指标的对照。
   - 科学计算中需要计算高阶微分，不仅是tanh、sigmoid等简单函数，paddle 目前无法支持sin cos exp 等算子的高阶微分计算；导致本算例中复现相对麻烦。
   - PINN中，在Adam优化结束后切换L-BGFS可以大幅降低，提升PDE求解精度，目前paddle的L-BFGS无法使用，本工作中均采用Adam，虽然可以实现要求，但根据经验，对其他问题未必奏效。
 
