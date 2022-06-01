@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
 from matplotlib import ticker
+import os
 
 
 class matplotlib_vision(object):
@@ -16,10 +17,10 @@ class matplotlib_vision(object):
         self.input_name = input_name
         self._cbs = [None] * len(self.field_name) * 3
 
-        gs = gridspec.GridSpec(1, 1)
-        gs.update(top=0.95, bottom=0.07, left=0.1, right=0.9, wspace=0.5, hspace=0.7)
-        gs_dict = {key: value for key, value in gs.__dict__.items() if key in gs._AllowedKeys}
-        self.fig, self.axes = plt.subplots(len(self.field_name), 3, gridspec_kw=gs_dict, num=100, figsize=(30, 20))
+        # gs = gridspec.GridSpec(1, 1)
+        # gs.update(top=0.95, bottom=0.07, left=0.1, right=0.9, wspace=0.5, hspace=0.7)
+        # gs_dict = {key: value for key, value in gs.__dict__.items() if key in gs._AllowedKeys}
+        # self.fig, self.axes = plt.subplots(len(self.field_name), 3, gridspec_kw=gs_dict, num=100, figsize=(30, 20))
         self.font = {'family': 'Times New Roman', 'weight': 'normal', 'size': 20}
 
 
@@ -94,7 +95,7 @@ class matplotlib_vision(object):
             plt.ylabel('$' + self.input_name[1] + '$', fontdict=self.font)
             plt.yticks(fontproperties='Times New Roman', size=20)
             plt.xticks(fontproperties='Times New Roman', size=20)
-            plt.savefig(self.log_dir + title + str(self.field_name[fi]) + '.jpg')
+            plt.savefig(os.path.join(self.log_dir, title + str(self.field_name[fi]) + '.jpg'))
 
     def plot_field_stokes(self, coord_visual, field_visual, title=None):
 
@@ -130,5 +131,4 @@ class matplotlib_vision(object):
             plt.ylabel('$' + self.input_name[1] + '$', fontdict=self.font)
             plt.yticks(fontproperties='Times New Roman', size=20)
             plt.xticks(fontproperties='Times New Roman', size=20)
-            plt.savefig(self.log_dir + title + '_field_' + str(self.field_name[fi]) + '.jpg')
-            # plt.savefig(res_path + 'field_' + str(field_name[fi]) + '-' + str(iter) + '.jpg')
+            plt.savefig(os.path.join(self.log_dir, title + str(self.field_name[fi]) + '.jpg'))

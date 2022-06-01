@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
     #################################### Soft loss ##################################
     # Adam 优化30000步
-    train('Adam_Init_', 30001, input_train, num_opt, Net_model, L2loss, Loss_weight, Optimizer1,
+    train('Adam_Init_', 35001, input_train, num_opt, Net_model, L2loss, Loss_weight, Optimizer1,
           log_loss=Log_loss, lambda_Re=lambla_Re, lambda_Im=lambla_Im, display_epoch=1000)
     # Adam 降学习率优化，模拟 L-BGFS优化器
     train('Adam_Redc_', 5001, input_train, num_opt, Net_model, L2loss, Loss_weight, Optimizer2,
