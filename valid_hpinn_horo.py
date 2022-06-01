@@ -24,12 +24,13 @@ def inference(inn_var, model, if_res=False):
 
 if __name__ == '__main__':
 
-    res_path = 'res\\hpinn_horo_mu_2_lag\\'
+    res_path = os.path.join('res', 'horo_mu_2')
+    train_path = os.path.join('res', 'horo_mu_2', 'train')
+    data_path = os.path.join('res', 'horo_mu_2', 'data')
+    model_path = os.path.join('res', 'horo_mu_2', 'model')
+    fig_path = os.path.join('res', 'horo_mu_2', 'figure')
     name = 'Lag_iter_'
-    isCreated = os.path.exists(res_path + 'figure\\')
-    if not isCreated:
-        os.makedirs(res_path + 'figure\\')
-
+    
     from horo_model import l_BOX
 
     ############## 定义计算域， #####################
@@ -58,32 +59,32 @@ if __name__ == '__main__':
 
     ############################## 验证集上计算目标函数 #####################
     Net_model = Net(planes=[15] + [48] * 4 + [3], X=input_optim)
-    Net_model.loadmodel(res_path + 'model\\' + name + '9_latest_model.pdparams')
-    output_optim, res_optim = inference(input_optim, Net_model, if_res=False)  # 网格空间分布 画云图
+    Net_model.loadmodel(os.path.join(model_path, name + '9_latest_model.pdparams'))
+    output_optim, res_optim = inference(input_optim, Net_model, if_res=False)  # 计算g3区域目标函数
     print("Final optim_function: {:.4e}".format(np.mean(res_optim**2)))
 
     ######################## 验证集上电场输出以及PDE残差 ######################
     Net_model = Net(planes=[15] + [48] * 4 + [3], X=input_valid)
-    Net_model.loadmodel(res_path + 'model\\' + name + '9_latest_model.pdparams')
-    output_valid, res_valid = inference(input_valid, Net_model, if_res=True)  # 网格空间分布 画云图
+    Net_model.loadmodel(os.path.join(model_path, name + '9_latest_model.pdparams'))
+    output_valid, res_valid = inference(input_valid, Net_model, if_res=True)  # 全域网格空间分布 画云图
     output_valid = output_valid.reshape([N[0], N[1], 3])
     input_valid = numpy_32(input_valid).reshape([N[0], N[1], 2])
     print("Final PDE_loss: {:.4e}".format(np.mean(res_valid**2)))
 
     ############################################## 获取Fig. 6 7所需的训练过程历史数据 #############################
-    data = sio.loadmat(res_path + 'data\\' + name + '9_langrangian.mat')   # 最后的结果
+    data = sio.loadmat(os.path.join(data_path, name + '9_langrangian.mat'))   # 最后的结果
     log_loss = data['log_loss'][:, (0, 1, 4, 5)]
-    coord_lambda = np.loadtxt(res_path + 'train\\' + 'input_train.txt', delimiter=' ')    # 训练时的空间分布
+    coord_lambda = np.loadtxt(os.path.join(train_path, 'input_train.txt'), delimiter=' ')    # 训练时的空间分布
 
     #求lambda
     lambda_Res, lambda_Ims = [], []
     for i in range(9):
-        data = sio.loadmat(res_path + 'data\\' + name + str(i + 1) + '_langrangian.mat')  # 最后的结果
+        data = sio.loadmat(os.path.join(data_path, name + str(i + 1) + '_langrangian.mat'))  # 最后的结果
         lambda_Res.append(data['lambda_Re'])
         lambda_Ims.append(data['lambda_Im'])
     lambda_Res, lambda_Ims = np.array(lambda_Res).squeeze(), np.array(lambda_Ims).squeeze()
 
-    Visual = visual_data.matplotlib_vision(res_path + 'figure\\', input_name=['x', 'y'],
+    Visual = visual_data.matplotlib_vision(fig_path, input_name=['x', 'y'],
                                            field_name=['Fig7 E', 'Fig7 eps',
                                                      'Fig 6C lambda_Re 1', 'Fig 6C lambda_Re 4', 'Fig 6C lambda_Re 9',
                                                      'Fig 6C lambda_Im 1', 'Fig 6C lambda_Im 4', 'Fig 6C lambda_Im 9'],
@@ -106,13 +107,13 @@ if __name__ == '__main__':
     plt.grid()
     plt.yticks(fontproperties='Times New Roman', size=20)
     plt.xticks(fontproperties='Times New Roman', size=20)
-    plt.savefig(Visual.log_dir + 'valid_Loss_Fig6_A.jpg')
+    plt.savefig(os.path.join(Visual.log_dir, 'valid_Loss_Fig6_A.jpg'))
 
 
     if 'Lag' in name or 'lag' in name:
         ########################################### 优化目标 Fig 6 B #################################################
         # 在拉格朗日每次迭代后的优化目标的变化
-        obj = log_loss[40000:, -2][::10000]
+        obj = log_loss[35000:, -2][::10000]
         plt.figure(400, figsize=(10, 6))
         plt.clf()
         plt.plot(np.arange(len(obj)) + 1, obj, "bo-")
@@ -121,7 +122,7 @@ if __name__ == '__main__':
         plt.grid()
         plt.yticks(fontproperties='Times New Roman', size=20)
         plt.xticks(fontproperties='Times New Roman', size=20)
-        plt.savefig(Visual.log_dir + 'valid_Objetive_Fig6_B.jpg')
+        plt.savefig(os.path.join(Visual.log_dir, 'valid_Objetive_Fig6_B.jpg'))
 
         ########################################### Lagrange乘子 Fig 6 C #################################################
         iter_ind = [0, 3, 8]
@@ -137,7 +138,7 @@ if __name__ == '__main__':
 
         ########################################### lambda/mu Fig 6 D #################################################
         # 随机挑选3个点 表示 lambdaRe lambdaIm 的迭代1-9的过程， 结论：lambda 收敛
-        np.random.seed(2022)
+        np.random.seed(555)
         ind = np.random.randint(low=0, high=lambda_Res.shape[-1], size=3)
         la_mu_ind = [lambda_Res[:, ind], lambda_Ims[:, ind]]
         marker = ['ro-', 'bo:', 'r*-', 'b*:', 'rp-', 'bp:', ]
@@ -152,7 +153,7 @@ if __name__ == '__main__':
         plt.ylabel(r'$ \lambda^k / \mu^k_F$', fontdict=font)
         plt.yticks(fontproperties='Times New Roman', size=12)
         plt.xticks(fontproperties='Times New Roman', size=12)
-        plt.savefig(Visual.log_dir + 'valid_lambda_Fig6_D.jpg')
+        plt.savefig(os.path.join(Visual.log_dir,'valid_lambda_Fig6_D.jpg'))
 
         ########################################### lamda/mu Fig 6E & Fig 6F #################################################
         # 5个迭代步中的lambda 分布情况
@@ -170,7 +171,7 @@ if __name__ == '__main__':
         plt.ylabel('Frequency', fontdict=font)
         plt.yticks(fontproperties='Times New Roman', size=12)
         plt.xticks(fontproperties='Times New Roman', size=12)
-        plt.savefig(Visual.log_dir + 'valid_lambda_Fig6_E.jpg')
+        plt.savefig(os.path.join(Visual.log_dir,'valid_lambda_Fig6_E.jpg'))
 
         plt.figure(700, figsize=(5, 5))
         plt.clf()
@@ -185,18 +186,7 @@ if __name__ == '__main__':
         # plt.rcParams['font.size'] = 2
         plt.yticks(fontproperties='Times New Roman', size=12)
         plt.xticks(fontproperties='Times New Roman', size=12)
-        plt.savefig(Visual.log_dir + 'valid_lambda_Fig6_F.jpg')
-
-
-
-
-
-
-
-
-
-
-
+        plt.savefig(os.path.join(Visual.log_dir,'valid_lambda_Fig6_F.jpg'))
 
 
 
