@@ -13,7 +13,7 @@ from horo_model import Net
 import visual_data
 
 
-os.environ['NUMEXPR_MAX_THREADS'] = '20'
+# os.environ['NUMEXPR_MAX_THREADS'] = '20'
 
 
 def train_batch(x, bound, model, loss, weight, optimizer, log_loss, lambda_Re, lambda_Im,):
@@ -77,7 +77,7 @@ def train(name, epoch, input_train, bound, model, loss, loss_weight, optimizer, 
             # Visual.plot_loss(np.arange(len(log_loss)), np.array(log_loss)[:, 3], 'lag_loss_2')
             Visual.plot_loss(np.arange(len(log_loss)), np.array(log_loss)[:, 4], 'opt_loss')
             Visual.plot_loss(np.arange(len(log_loss)), np.array(log_loss)[:, -1], 'total_loss')
-            plt.savefig(Visual.log_dir + 'log_loss.svg')
+            plt.savefig(os.path.join(Visual.log_dir, 'log_loss.svg'))
 
             star_time = time.time()
 
@@ -98,8 +98,8 @@ def train(name, epoch, input_train, bound, model, loss, loss_weight, optimizer, 
             paddle.save({'epoch': iter, 'model': Net_model.state_dict(),
                          'log_loss': np.array(log_loss), 'lambda_Re': lambda_Re,
                          'lambda_Im': lambda_Im, 'mu_f': mu,},
-                        res_path + 'model\\' + name + 'latest_model.pdparams')
-            sio.savemat(res_path + 'data\\' + name + 'langrangian.mat',
+                        os.path.join(model_path, name + 'latest_model.pdparams'))
+            sio.savemat(os.path.join(data_path, name + 'langrangian.mat'),
                         {'log_loss': np.array(log_loss), 'mu_f': mu,
                          'lambda_Re': lambda_Re, 'lambda_Im': lambda_Im,
                          'coord_visual': coord_visual, 'field_visual': field_visual})
@@ -107,13 +107,18 @@ def train(name, epoch, input_train, bound, model, loss, loss_weight, optimizer, 
 
 if __name__ == '__main__':
 
-    res_path = 'res\\hpinn_horo_mu_2_lag\\'
+    res_path = os.path.join('res', 'horo_mu_2')
+    train_path = os.path.join('res', 'horo_mu_2', 'train')
+    data_path = os.path.join('res', 'horo_mu_2', 'data')
+    model_path = os.path.join('res', 'horo_mu_2', 'model')
+    fig_path = os.path.join('res', 'horo_mu_2', 'figure')
     isCreated = os.path.exists(res_path)
     if not isCreated:
         # os.makedirs(res_path)
-        os.makedirs(res_path + 'train\\')
-        os.makedirs(res_path + 'data\\')
-        os.makedirs(res_path + 'model\\')
+        os.makedirs(train_path)
+        os.makedirs(data_path)
+        os.makedirs(model_path)
+        os.makedirs(fig_path)
 
     ############################### 定义计算域，并随机生成数据 input_train ##################################
     from horo_model import l_BOX
@@ -135,7 +140,7 @@ if __name__ == '__main__':
 
     input_train = np.concatenate([x_g3_small, x_boundl, x_boundr, x_boundd, x_boundu, x_inner], axis=0).astype(np.float32)
     num_opt = x_g3_small.shape[0]
-    np.savetxt(res_path + 'train\\' + 'input_train.txt', input_train[num_opt:])
+    np.savetxt(os.path.join(train_path, 'input_train.txt'), input_train[num_opt:])
 
     input_train = paddle.to_tensor(input_train, dtype='float32', place='gpu:0')
 
@@ -156,8 +161,7 @@ if __name__ == '__main__':
                                        beta1=0.9, beta2=0.999, epsilon=1e-8,)
     Optimizer2 = paddle.optimizer.Adam(learning_rate=0.0001, parameters=Net_model.parameters(),
                                        beta1=0.9, beta2=0.999, epsilon=1e-8,)
-    Visual = visual_data.matplotlib_vision(res_path + 'train\\',
-                                           field_name=['E', 'eps', 'lambda_Re', 'lambda_Im'], input_name=['x', 'y'])
+    Visual = visual_data.matplotlib_vision(train_path, field_name=['E', 'eps', 'lambda_Re', 'lambda_Im'], input_name=['x', 'y'])
 
     mu = 2.0
     Log_loss = []
@@ -167,7 +171,7 @@ if __name__ == '__main__':
     lambla_Re, lambla_Im = np.zeros((len(input_train[num_opt:]), 1)), np.zeros((len(input_train[num_opt:]), 1))
 
     #################################### Soft loss ##################################
-    # Adam 优化30000步
+    # Adam 优化35000步
     train('Adam_Init_', 35001, input_train, num_opt, Net_model, L2loss, Loss_weight, Optimizer1,
           log_loss=Log_loss, lambda_Re=lambla_Re, lambda_Im=lambla_Im, display_epoch=1000)
     # Adam 降学习率优化，模拟 L-BGFS优化器
@@ -201,10 +205,3 @@ if __name__ == '__main__':
 
         train('Lag_iter_' + str(i) + '_', 10001, input_train, num_opt, Net_model, L2loss, Loss_weight, Optimizer2,
               log_loss=Log_loss, lambda_Re=lambla_Re, lambda_Im=lambla_Im, display_epoch=1000)
-
-
-
-
-
-
-
