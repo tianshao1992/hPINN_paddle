@@ -74,7 +74,7 @@
 
 **1). 多个物理场输出的网络模型**
 
-![image-20220606111952189](C:\Users\liyunzhu\AppData\Roaming\Typora\typora-user-images\image-20220606111952189.png)
+![image-20220606111952189](fig/fig1.jpg)
 
 - 对$n$个物理场$u_1,u_2,...u_n$等$n$个需要物理场，对每个物理场分别建立1个全连接神经网络，共计$n$个神经网络，实施代码如下：
 
@@ -105,7 +105,7 @@ class PaddleModel_multi(nn.Layer):
 
 **2). 边界条件硬约束施加**
 
-![image-20220606112926503](D:\Code\hPINN_paddle\fig\fig1.jpg)
+![image-20220606112926503](fig/fig1.jpg)
 
 - 考虑空间坐标的x方向存在的对称性边界条件，采用6阶谐波对x方向的进行输入特征转化，单阶谐波对y方向，网络输出前的特征转化feature_transform代码如下：
 
