@@ -74,7 +74,7 @@
 
 **1). 多个物理场输出的网络模型**
 
-![image-20220606111952189](fig/fig1.jpg)
+<img src="fig/fig1.jpg" alt="image-20220606111952189" style="zoom:50%;" />
 
 - 对$n$个物理场$u_1,u_2,...u_n$等$n$个需要物理场，对每个物理场分别建立1个全连接神经网络，共计$n$个神经网络，实施代码如下：
 
@@ -105,7 +105,7 @@ class PaddleModel_multi(nn.Layer):
 
 **2). 边界条件硬约束施加**
 
-![image-20220606112926503](fig/fig2.jpg)
+<img src="fig/fig2.jpg" alt="image-20220606112926503" style="zoom:50%;" />
 
 - 考虑空间坐标的x方向存在的对称性边界条件，采用6阶谐波对x方向的进行输入特征转化，单阶谐波对y方向，网络输出前的特征转化feature_transform代码如下：
 
@@ -145,6 +145,8 @@ def output_transform(self, inn_var, out_var):
 
 **3). 采用增广Lagrangian方法添加额外的惩罚项**
 
+<img src="fig/fig3.jpg" alt="image-20220606121553603" style="zoom:50%;" />
+
 - 实际优化时，在前30000步采用物理守恒方程损失优化，后100000步引入增强Lagrangian，采用下式更新拉格朗日乘子：
   $$
   \begin{aligned}
@@ -168,7 +170,7 @@ mu *= beta
 
 考虑上述的网络的结构，实际的物理场输出关系如下：
 
-![image-20220526200528982](fig/forward.png)
+<img src="fig/forward.png" alt="image-20220526200528982" style="zoom:50%;" />
 
 - 考虑feature_transform里具有sin() cos() 以及output_transform里有exp() 等Paddle暂时无法支持高阶微分的算子，因此计算$\nabla_x f(\pmb{x})$，$\nabla_x^T \nabla_x f(\pmb{x})$，（其中$f$指代电场实部或虚部的标量场，$\pmb{x}$指代空间坐标的向量，其余为中间涉及的映射），需要将无法自动微分的映射剥离开，利用手动微分计算这些部分的高阶导数，最后再用于PDE中的残差损失，上述计算的前向过程如下式所示：
 
@@ -241,7 +243,7 @@ DwIDx.unsqueeze(-1) @ DtDx.unsqueeze(-2) + (w[:, 1:2] * D2tDx).reshape((-1, 2, 2
 | 信息          | 说明                                                         |
 | ------------- | ------------------------------------------------------------ |
 | 发布者        | tianshao1992                                                 |
-| 时间          | 2022.5.                                                 |
+| 时间          | 2022.6                                                       |
 | 框架版本      | Paddle 2.3.0                                                 |
 | 应用场景      | 科学计算                                                     |
 | 支持硬件      | CPU、GPU                                                     |
